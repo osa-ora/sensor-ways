@@ -1,0 +1,100 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.util.TimeZone"%>
+<%@page import="osa.ora.iot.db.beans.TenantSettings"%>
+<%@page import="osa.ora.iot.db.beans.Scheduler"%>
+<%@page import="osa.ora.iot.db.beans.Workflows"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="osa.ora.iot.beans.IConstant"%>
+<%@page import="java.util.Date"%>
+<%@page import="osa.ora.iot.util.IoTUtil"%>
+<%@page import="osa.ora.iot.db.beans.Users"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+if(session.getAttribute("USER")==null) {
+	response.sendRedirect("error.jsp");
+        return;
+}
+Users user = (Users) session.getAttribute("USER");
+TenantSettings setting= (TenantSettings) session.getAttribute("USER_SETTINGS");
+String notificationCount=(String)session.getAttribute("NOTIFICATION_COUNT");
+DateFormat formatter = new SimpleDateFormat("EEE dd MMM HH:mm");
+formatter.setTimeZone(TimeZone.getTimeZone(setting.getTimezone()));
+%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SensorWays IoT, Users List Page</title>
+        <link rel="stylesheet" href="css/w3.css">
+        <link rel='stylesheet' href='css/style.css'>
+        <link rel='stylesheet' href='css/style2.css'>
+        <script src="js/ajax_check_notifications.js"></script>  
+</head>
+<body>
+        <div class="navbar">
+            <a href="index.jsp"><i class="fa fa-fw"></i><img style="width: 25px; height: 25px;" src="images/home.png"> Home Page</a>
+            <a href="information.jsp"><i class="fa fa-fw"></i><img style="width: 25px; height: 25px;" src="images/humidity.png"> Supported Devices</a>
+            <a href="contact.jsp"><i class="fa fa-fw"></i><img style="width: 25px; height: 25px;" src="images/notification.png"> Contact Us</a>
+            <a href="main.jsp"><i class="fa fa-fw"></i><img style="width: 25px; height: 25px;" src="images/menu.png"> Main Menu</a>
+            <a href="NotificationServlet?action=<%=IConstant.ACTION_WEB_LIST_NOTIFICATIONS%>"><i style="float:right;"></i><img src="images/alert.png" style="width: 30px; height: 25px;"> Alerts <span id="total">(<%=notificationCount%>)</span></a>
+            <a href="LogoutServlet"><i class="fa fa-fw"></i><img style="width: 25px; height: 25px;" src="images/members.png"> Logout</a>
+        </div> 
+	&nbsp;&nbsp;<%=formatter.format(new Date())%><h3>&nbsp;Welcome <%=user.getUsername()%> [<i><font color="red"><%=setting.getIdentityName()%></font></i>]</h3>
+        &nbsp;&nbsp;<a href='main.jsp'>Main Menu</a> > Manage Users<br>
+        <%
+        List<Users> usersList = null;
+	if(session.getAttribute("USERS_LIST")!=null){
+		usersList = (List<Users>)session.getAttribute("USERS_LIST");
+        %>
+        <h3>&nbsp;List of Account Users (<%=usersList.size()%> out of <%=setting.getMaxUsers()%>)</h3>
+	<table>
+	<tr><th>Id</th><th>User Name</th><th>Email</th><th>Creation Date</th><th>Last Login Time</th><th>Last Login IP Address</th>
+	<th>Invalid Login Trials</th><th>User Role</th><th>User Status</th><th>Action</th></tr>
+	<%
+	for (int n = 0; n < usersList.size(); n++) {
+            Users currentuser = usersList.get(n);
+            %>
+            <tr><td><%=n+1%>
+            </td><td><%=currentuser.getUsername()%>
+            </td><td><%=currentuser.getEmailAddress()%>
+            </td><td><%=currentuser.getCreationDate()%>
+            </td><td><%=currentuser.getLastLoginTime()==null?"N/A":formatter.format(currentuser.getLastLoginTime())%>
+            </td><td><%=currentuser.getIpAddress()==null?"N/A":currentuser.getIpAddress()%>
+            </td><td><%=currentuser.getInvalidLoginTrials()%>
+            </td><td><% if(1==currentuser.getIdentityAdmin()) {%> 
+                    <img src='images/admin.png'/>
+                <% } else {%>
+                    <%=IoTUtil.getDisplayUserTypeForWeb(currentuser.getUserRole())%>
+                <%}%>
+            </td><td><%=IoTUtil.getDisplayUserStatus(currentuser.getUserStatus())%>
+            </td><td>
+                <%
+            if(user.getId()!=currentuser.getId() && user.getUserRole()==IConstant.ROLE_READ_WRITE 
+                    && 0==currentuser.getIdentityAdmin()) { 
+                    String actionClick = "ManageUsersServlet?userId=" + currentuser.getId()+ "&action=";
+                    if(currentuser.getUserStatus()==1){%>
+                    <a style="width: 200px" class="w3-btn w3-ripple w3-red" href="<%=actionClick + IConstant.ACTION_WEB_INACTIVATE_USER%>">Deactivate User</a><br>
+                    <%} else {%>
+                        <a style="width: 200px" class="w3-btn w3-ripple w3-green" href="<%=actionClick + IConstant.ACTION_WEB_ACTIVATE_USER%>">Activate User</a><br>
+                    <% }
+                    if(currentuser.getUserRole()==1){%>
+                        <a style="width: 200px" class="w3-btn w3-ripple w3-red" href="<%=actionClick + IConstant.ACTION_WEB_MAKE_USER_READONLY%>">Change to Read-Only</a><br>
+                    <%} else {%>
+                        <a style="width: 200px" class="w3-btn w3-ripple w3-green" href="<%=actionClick + IConstant.ACTION_WEB_MAKE_USER_READWRITE%>">Full Privileges</a><br>
+                    <% }%>
+                        <a style="width: 200px" class="w3-btn w3-ripple w3-teal" onclick="return confirm('Confirm Delete this User?');" href="<%=actionClick + IConstant.ACTION_WEB_DELETE_USER%>">Delete User</a></td>
+            <% } %>
+            </td></tr>
+	<%}
+        }%>
+        </table>
+        <% if(user.getUserRole()==IConstant.ROLE_READ_WRITE && user.getUserCreation()==1 && usersList.size()<setting.getMaxUsers()) { %>
+        <br><a class="w3-btn w3-ripple w3-red" href='registerUser.jsp'>Register New User</a>
+        <%} %>
+        <a class="w3-btn w3-ripple w3-red" href='main.jsp'>Back to Main Menu</a><br><br>
+    <%@include file="footer.jsp" %>
+</body>
+</html>
