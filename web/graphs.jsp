@@ -428,7 +428,8 @@
                             newX = 50 + ((messages.get(0).getMessageTime().getTime() - message.getMessageTime().getTime()) / pixelTime);
                             message.setPayload(message.getPayload().replace('[',','));
                             String[] parts=message.getPayload().split(",");
-                            if(parts[sensorVal-1].contains("0")) 
+                            //System.out.println("Data="+parts[sensorVal-1]);
+                            if(parts[sensorVal-1].contains("1")) 
                                 newY=123.0; 
                             else 
                                 newY=177.0;
@@ -449,7 +450,7 @@
                             newX = 50 + ((messages.get(0).getMessageTime().getTime() - message.getMessageTime().getTime()) / pixelTime);
                             message.setPayload(message.getPayload().replace('[',','));
                             String[] parts=message.getPayload().split(",");
-                            if(parts[sensorVal-1].contains("0")) 
+                            if(parts[sensorVal-1].contains("1")) 
                                 newY=123.0; 
                             else 
                                 newY=177.0;
