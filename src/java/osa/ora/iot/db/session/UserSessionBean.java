@@ -2092,6 +2092,7 @@ public class UserSessionBean extends AbstractFacade<Users> {
         device.setTotalInboundMonth(0);
         device.setTotalOutboundMonth(0);
         device.setTotalMessages(0);
+        device.setOfflineFlag(0);
         device.setTotalMessagesMonth(0);
         device.setTotalAlerts(0);
         device.setDevice1Status(0);
