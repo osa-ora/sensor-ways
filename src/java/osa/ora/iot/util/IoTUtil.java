@@ -368,6 +368,9 @@ public class IoTUtil {
             case 18:
                 icon="<img src='images/location.png'/>";
                 break;
+            case 19:
+                icon="<img src='images/trash.png'/>";
+                break;
             default:
                 icon="<img src='images/no-image.png'/>";
                 break;
@@ -410,6 +413,8 @@ public class IoTUtil {
                     return icon+"<img src='images/water.png'/>";
                 case 18:
                     return icon+"<img src='images/location.png'/>";
+                case 19:
+                    return icon+"<img src='images/trash.png'/>";
                 default:
                     return icon;
             }
@@ -472,11 +477,17 @@ public class IoTUtil {
                         icon="<img src='images/no-image.png'/> = ";
                         break;
                     case 16:
-                        return "<img src='images/rain.png'/> = ";
+                        icon="<img src='images/rain.png'/> = ";
+                        break;
                     case 17:
-                        return "<img src='images/water.png'/> = ";
+                        icon="<img src='images/water.png'/> = ";
+                        break;
                     case 18:
-                        return "<img src='images/location.png'/> = ";
+                        icon="<img src='images/location.png'/> = ";
+                        break;
+                    case 19:
+                        icon="<img src='images/trash.png'/>";
+                        break;
                     default:
                         icon="";
                         break;
@@ -532,11 +543,17 @@ public class IoTUtil {
                         icon=" <img src='images/no-image.png'/> = ";
                         break;
                     case 16:
-                        return "<img src='images/rain.png'/> = ";
+                        icon=" <img src='images/rain.png'/> = ";
+                        break;
                     case 17:
-                        return "<img src='images/water.png'/> = ";
+                        icon=" <img src='images/water.png'/> = ";
+                        break;
                     case 18:
-                        return "<img src='images/location.png'/> = ";
+                        icon=" <img src='images/location.png'/> = ";
+                        break;
+                    case 19:
+                        icon=" <img src='images/trash.png'/>";
+                        break;
                     default:
                         icon=" - ";
                         break;

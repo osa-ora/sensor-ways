@@ -122,6 +122,7 @@ formatter.setTimeZone(TimeZone.getTimeZone(setting.getTimezone()));
             <input type="radio" name="sensor_icon1" value="16"> <img src='images/rain.png'/></input>
             <input type="radio" name="sensor_icon1" value="17"> <img src='images/water.png'/></input>
             <input type="radio" name="sensor_icon1" value="18"> <img src='images/location.png'/></input>
+            <input type="radio" name="sensor_icon1" value="19"> <img src='images/trash.png'/></input>
         </td></tr>
         <tr name="second1" id="second1"><td>Second Sensor Name</td><td>
                 <input type="text" name="sensor2" size="8" maxlength="8" value=""/>
@@ -164,6 +165,7 @@ formatter.setTimeZone(TimeZone.getTimeZone(setting.getTimezone()));
             <input type="radio" name="sensor_icon2" value="16"> <img src='images/rain.png'/></input>
             <input type="radio" name="sensor_icon2" value="17"> <img src='images/water.png'/></input>
             <input type="radio" name="sensor_icon2" value="18"> <img src='images/location.png'/></input>
+            <input type="radio" name="sensor_icon2" value="19"> <img src='images/trash.png'/></input>
         </td></tr>
         <tr><td>Controls 0 Device</td><td>
                 <input style="width: 300px;" type="checkbox" name="device0"/> Yes
