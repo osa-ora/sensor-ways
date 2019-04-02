@@ -253,6 +253,8 @@ public class UserSessionBean extends AbstractFacade<Users> {
                 newMessage.setMessageTime(message.getMessageTime());
                 newMessage.setPayload(message.getPayload());
                 newMessage.setType(typeVal);
+                newMessage.setBinaryPayload(message.getBinaryPayload());
+                newMessage.setFormat(message.getFormat());
                 em.persist(newMessage);
                 //delete the message now
                 em.remove(message);

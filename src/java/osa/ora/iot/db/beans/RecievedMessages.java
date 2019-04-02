@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "RecievedMessages.findByDeviceId", query = "SELECT r FROM RecievedMessages r WHERE r.deviceId = :deviceId")
     , @NamedQuery(name = "RecievedMessages.findByPayload", query = "SELECT r FROM RecievedMessages r WHERE r.payload = :payload")
     , @NamedQuery(name = "RecievedMessages.findByType", query = "SELECT r FROM RecievedMessages r WHERE r.type = :type")
-    , @NamedQuery(name = "RecievedMessages.findByMessageTime", query = "SELECT r FROM RecievedMessages r WHERE r.messageTime = :messageTime")})
+    , @NamedQuery(name = "RecievedMessages.findByMessageTime", query = "SELECT r FROM RecievedMessages r WHERE r.messageTime = :messageTime")
+    , @NamedQuery(name = "RecievedMessages.findByFormat", query = "SELECT r FROM RecievedMessages r WHERE r.format = :format")})
 public class RecievedMessages implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,7 +48,7 @@ public class RecievedMessages implements Serializable {
     @Size(max = 30)
     @Column(name = "device_id")
     private String deviceId;
-    @Size(max = 120)
+    @Size(max = 300)
     @Column(name = "payload")
     private String payload;
     @Column(name = "type")
@@ -54,6 +56,11 @@ public class RecievedMessages implements Serializable {
     @Column(name = "message_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date messageTime;
+    @Column(name = "format")
+    private Integer format;
+    @Lob
+    @Column(name = "binary_payload")
+    private byte[] binaryPayload;
 
     public RecievedMessages() {
     }
@@ -100,6 +107,22 @@ public class RecievedMessages implements Serializable {
 
     public void setMessageTime(Date messageTime) {
         this.messageTime = messageTime;
+    }
+
+    public Integer getFormat() {
+        return format;
+    }
+
+    public void setFormat(Integer format) {
+        this.format = format;
+    }
+
+    public byte[] getBinaryPayload() {
+        return binaryPayload;
+    }
+
+    public void setBinaryPayload(byte[] binaryPayload) {
+        this.binaryPayload = binaryPayload;
     }
 
     @Override

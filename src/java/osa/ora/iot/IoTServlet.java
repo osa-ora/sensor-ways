@@ -131,14 +131,29 @@ public class IoTServlet extends HttpServlet {
                 case IConstant.ACTION_UPDATE:
                     deviceSecretKey = request.getParameter("s"); //secretKey
                     messagePayload = request.getParameter("m");
+                    String format = request.getParameter("f");
                     message = new RecievedMessages();
-                    message.setPayload(messagePayload);
                     message.setDeviceId(deviceId);
                     message.setMessageTime(new Date());
+                    //consturct payload according to the message format
+                    //if no format then use the default comma separated values which is the most compressed format
+                    if(format==null || "".equals(format)){ //comma separated values for example: 20,30,ON
+                        message.setFormat(0);
+                        message.setPayload(messagePayload);
+                    }else{
+                        if("1".equals(format)){  //JSON object which is user friendly but larger size e.g. {"Temp":30.00, "Humidity":40.00}
+                            message.setFormat(1);
+                            message.setPayload(messagePayload);
+                        }else if("2".equals(format)){      //Binary object for camera images and special format such as ECG
+                            message.setFormat(2);
+                            //TODO: Need to be fixed later into streaming the data or decode base 64
+                            message.setBinaryPayload(messagePayload.getBytes()); 
+                        }
+                    }
                     message.setType(typeVal);
-                    System.out.println("Type:"+typeVal);
+                    //System.out.println("Type:"+typeVal);
                     actionRequired = userSessionBean.acceptMessage(deviceId, deviceSecretKey, message);
-                    System.out.println("Will return actions:"+actionRequired);
+                    //System.out.println("Will return actions:"+actionRequired);
                     if (actionRequired!=null) {
                         userSessionBean.saveDeviceTraffic(deviceId, requestSize, actionRequired.length());
                         response.getWriter().println("s:" + actionRequired);
