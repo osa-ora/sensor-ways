@@ -273,9 +273,11 @@ DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `device_id` varchar(30) DEFAULT NULL,
-  `payload` varchar(120) DEFAULT NULL,
+  `payload` varchar(300) DEFAULT NULL,
   `type` int(11) DEFAULT NULL,
   `message_time` datetime DEFAULT NULL,
+  `format` INT(11) NULL,
+  `binary_payload` MEDIUMBLOB NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3953 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -290,9 +292,11 @@ DROP TABLE IF EXISTS `recieved_messages`;
 CREATE TABLE `recieved_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `device_id` varchar(30) DEFAULT NULL,
-  `payload` varchar(120) DEFAULT NULL,
+  `payload` varchar(300) DEFAULT NULL,
   `type` int(11) DEFAULT NULL,
   `message_time` datetime DEFAULT NULL,
+  `format` INT(11) NULL,
+  `binary_payload` MEDIUMBLOB NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
