@@ -131,7 +131,8 @@ formatter.setTimeZone(TimeZone.getTimeZone(setting.getTimezone()));
                     a=action (must be set to 5)<br>
                     i=base64 device identifier<br>
                     s=device secret code<br>
-                    m=message payload which contains the actual message in the following format:<br>
+                    f=payload_format which could be either 0 for comma separated values, 1 for JSON and 2 for binary format e.g. image, if not sent it is set as 0<br>
+                    m=message payload which contains the actual message in the described format, e.g. for comma separated it looks like:<br>
                     sensor 1 value,[sensor 2 value], [device 1 state], [device 2 state][,Low Battery Flag]<br>
                     The device status could be F (for OFF) N for (ON)<br>
                     Low Battery Flag is L<br>
